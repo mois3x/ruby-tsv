@@ -39,7 +39,11 @@ module TSV
         end
 
         loop do
-          y << TSV::Row.new(generate_row_from(lines.next).freeze, local_header.freeze)
+          row_line = lines.next
+          while local_header.count != generate_row_from(row_line).count
+            row_line += lines.next
+          end
+          y << TSV::Row.new(generate_row_from(row_line).freeze, local_header.freeze)
         end
       end
     end
